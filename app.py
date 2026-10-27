@@ -22,11 +22,11 @@ def handle_reaction_added(event, say):
         )
         message = result["messages"][0]["text"]
         
-        plane_api_key = os.environ.get("PLANE_API_KEY")
-        workspace_slug = "your-workspace-slug" # Update this
-        project_id = "your-project-id"         # Update this
+        plane_api_key = os.environ.get("plane_api_your_key_here")
+        workspace_slug = "kasplo-prod" # Update this
+        project_id = "68b19e1d-0f8f-4b77-9dba-68697b7ecae1"         # Update this
         
-        url = f"https://api.plane.so/api/v1/workspaces/{workspace_slug}/projects/{project_id}/issues/"
+        url = f"https://tickets.kasplo.com/api/v1/workspaces/{workspace_slug}/projects/{project_id}/issues/"
         headers = {"Content-Type": "application/json", "x-api-key": plane_api_key}
         payload = {"name": "Customer Complaint from Slack", "description_html": f"<p>{message}</p>"}
         
