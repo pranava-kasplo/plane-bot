@@ -5,8 +5,7 @@ from flask import Flask
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-# Initialize app using environment variables
-app =r"xoxb-your-slack-bot-token"
+app = App(token=r"xoxb-your-slack-bot-token")
 
 @app.event("reaction_added")
 def handle_reaction_added(event, say):
