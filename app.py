@@ -6,7 +6,7 @@ from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 # Initialize app using environment variables
-app = App(token=os.environ.get("xoxb-your-slack-bot-token"))
+app =r"xoxb-your-slack-bot-token"
 
 @app.event("reaction_added")
 def handle_reaction_added(event, say):
@@ -22,9 +22,9 @@ def handle_reaction_added(event, say):
         )
         message = result["messages"][0]["text"]
         
-        plane_api_key = os.environ.get("plane_api_your_key_here")
-        workspace_slug = "kasplo-prod" # Update this
-        project_id = "68b19e1d-0f8f-4b77-9dba-68697b7ecae1"         # Update this
+        plane_api_key =r"plane_api_your_key_here"
+        workspace_slug = r"kasplo-prod" # Update this
+        project_id = r"68b19e1d-0f8f-4b77-9dba-68697b7ecae1"         # Update this
         
         url = f"https://tickets.kasplo.com/api/v1/workspaces/{workspace_slug}/projects/{project_id}/issues/"
         headers = {"Content-Type": "application/json", "x-api-key": plane_api_key}
@@ -45,4 +45,4 @@ def run_flask():
 
 if __name__ == "__main__":
     Thread(target=run_flask).start()
-    SocketModeHandler(app, os.environ.get("xapp-your-slack-app-token")).start()
+    SocketModeHandler(app,r"xapp-your-slack-app-token").start()
