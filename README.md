@@ -41,7 +41,6 @@ The integration relies on the following secrets stored securely in the Render da
 Because Render's free tier lacks persistent disk storage, ping history is kept in short-term memory (up to 100 records). 
 
 A custom `/dump` endpoint is configured on the Flask server:
-- Navigating to `https://plane-bot.onrender.com/dump` in a web browser bundles the active session's ping history.
-- Executes an anonymous `POST` request to the [dpaste.com](https://dpaste.com) API.
-- Returns a shareable, 7-day plain text URL to review the system's uptime logs.
+- Navigating to `https://plane-bot.onrender.com/dump` in a web browser directly displays formatted diagnostic logs (current server time, container startup time, and all recent ping timestamps in both IST and UTC).
+- Automatically attempts to generate an optional 7-day shareable URL via [dpaste.com](https://dpaste.com) without blocking or failing page output if external network calls are restricted.
 
