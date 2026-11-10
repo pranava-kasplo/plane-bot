@@ -53,27 +53,28 @@ app = App(token=SLACK_BOT_TOKEN)
 def handle_reaction_added(event, say):
     reaction = event.get("reaction")
     item = event.get("item")
+    channel_id = item.get("channel")
     
-    if reaction == "ticket" and item:
-        try:
-            result = app.client.conversations_history(
-                channel=item["channel"],
-                latest=item["ts"],
-                inclusive=True,
-                limit=1
-            )
-            messages = result.get("messages", [])
-            if not messages:
-                return
-            message = messages[0].get("text", "")
-            
-            url = f"https://tickets.kasplo.com/api/v1/workspaces/{WORKSPACE_SLUG}/projects/{PROJECT_ID}/issues/"
-            headers = {"Content-Type": "application/json", "x-api-key": PLANE_API_KEY}
-            payload = {"name": "Production Complaint from Slack", "description_html": f"<p>{message}</p>"}
-            
-            requests.post(url, headers=headers, json=payload, verify=CA_BUNDLE, timeout=10)
-        except Exception as e:
-            print(f"Error handling reaction_added event: {e}")
+    TARGET_CHANNEL_ID = "C0CGD83RDNW" 
+    
+    if reaction == "ticket" and channel_id == TARGET_CHANNEL_ID:
+        result = app.client.conversations_history(
+            channel=channel_id,
+            latest=item["ts"],
+            inclusive=True,
+            limit=1
+        )
+        message = result["messages"][0]["text"]
+        
+        plane_api_key = os.environ.get("PLANE_API_KEY")
+        workspace_slug = "kasplo-prod" 
+        project_id = "68b19e1d-0f8f-4b77-9dba-68697b7ecae1"         
+        
+        url = f"https://tickets.kasplo.com/api/v1/workspaces/{workspace_slug}/projects/{project_id}/issues/"
+        headers = {"Content-Type": "application/json", "x-api-key": plane_api_key}
+        payload = {"name": "Customer Complaint from Slack", "description_html": f"<p>{message}</p>"}
+        
+        requests.post(url, headers=headers, json=payload)
 
 # Lightweight Flask server to pass Render's port health check
 @flask_app.route("/")
